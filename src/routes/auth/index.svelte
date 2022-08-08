@@ -3,6 +3,8 @@
 </script>
 
 <script>
+
+    import store from "./auth-store.js";
     
     $: dane = {
         email: '',
@@ -17,9 +19,11 @@
 				'Content-Type': 'application/json'
 			}
         }).then(res => {
-            if(res.ok){
-                console.log("Zalogowano!")
-            }
+                res.json().then(res => {
+                    store.set(res.token);
+                    goto("/dashboard")
+                });
+                
         }).catch(err => {
             console.log(err);
         })

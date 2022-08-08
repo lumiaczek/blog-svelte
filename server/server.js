@@ -70,6 +70,22 @@ app.post("/login" , (req, res) => {
     });
 });
 
+app.get("/verify", (req, res) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1]
+
+    if (token == null) return res.sendStatus(401);
+
+    jwt.verify(token, process.env.SECRET, (err, user) => {
+        console.log(err)
+    
+        if (err) return res.sendStatus(403)
+    
+        res.sendStatus(200).json({msg: "User autorized"})
+  
+    });
+})
+
 
 
 app.listen(process.env.PORT, () => {
