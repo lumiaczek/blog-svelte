@@ -16,15 +16,25 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.get("/", async (req, res) =>{
-    const posts = await Blog.find().lean();
-    res.set('Content-Type', 'application/json');
-    res.status(200).send(JSON.stringify(posts));
+        const posts = await Blog.find().lean();
+        res.set('Content-Type', 'application/json');
+        res.status(200).send(JSON.stringify(posts));
+
 });
+
+app.post("/", async (req, res) => {
+    const id = req.body.id;
+    const post = await Blog.find({_id: id}).lean();
+    res.set('Content-Type', 'application/json');
+    res.status(200).send(JSON.stringify(post));
+})
 
 app.post("/add", async (req,res) => {
     await Blog.create({
         name: req.body.name,
+        description: req.body.description,
         content: req.body.content,
+        url: req.body.url,
         date: req.body.date
     });
     res.sendStatus(200)
@@ -34,7 +44,6 @@ app.post("/signup", (req, res) => {
     if(!req.body.email || !req.body.password){
         res.status(403).json({msg: "Email or password wasn't provided"});
     }
-
     User.create({
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 10)
@@ -47,7 +56,6 @@ app.post("/signup", (req, res) => {
 });
 
 app.post("/login" , (req, res) => {
-    console.log(req.body);
     if(!req.body.email || !req.body.password){
         res.status(403).json({msg: "Email or password wasn't provided"});
         return;
@@ -61,7 +69,7 @@ app.post("/login" , (req, res) => {
             if(!bcrypt.compareSync(req.body.password, user.password)){
                 res.status(400).json({msg: "Password for user is wrong"});
             } else {
-                const token = jwt.sign({id: user._id, email: user.email}, process.env.SECRET, {expiresIn: "500s"});
+                const token = jwt.sign({id: user._id, email: user.email}, process.env.SECRET, {expiresIn: "1000s"});
                 res.status(200).json({msg: "Logged in!", token: token});
             }
         }
@@ -85,8 +93,6 @@ app.get("/verify", (req, res) => {
   
     });
 })
-
-
 
 app.listen(process.env.PORT, () => {
     mongoose.connect(process.env.MONGO_URI, () =>{

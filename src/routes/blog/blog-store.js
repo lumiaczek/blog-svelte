@@ -1,12 +1,5 @@
-import { writable } from "svelte/store";
+import { writable } from 'svelte/store';
 
+const id = writable('');
 
-
-fetch("http://localhost:5000/").then(res => {
-    res.json().then(res => {
-    posts = res;
-    console.log(posts);
-});
-}).catch(err => {
-    console.error(err);
-})
+export default id;

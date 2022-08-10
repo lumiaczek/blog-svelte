@@ -1,5 +1,5 @@
 <script>
-    import { onMount } from "svelte";
+    import { onMount, onDestroy} from "svelte";
     import auth from '../auth/auth-store.js'
     import Navbar from './Navbar.svelte';
 
@@ -9,12 +9,12 @@
     $: loading = true;
     let [ postStateSuccess, postStateFail ] = [false, false];
 
+    const unsubscribe = auth.subscribe(data => {
+            token = data;
+    });
+
 
     onMount(() => {
-        auth.subscribe(data => {
-            token = data;
-        });
-
         fetch("http://localhost:5000/verify",{
             method: 'GET',
             headers: {
@@ -29,16 +29,26 @@
             console.log(err);
         })
 
+        
+
     });
+
+    onDestroy(() => {
+        if(unsubscribe){
+            unsubscribe();
+        }
+    })
 
     $: post = {
         name: '',
+        description: '',
         content: '',
+        url: '',
         date: ''
     }
     
       const addPost = () => {
-        if(post.name !== '' || post.content !== '' || post.date !== ''){
+        if(post.name !== '' || post.content !== '' || post.date !== '' || post.url !== '' || post.description !== ''){
             fetch("http://localhost:5000/add",{
                 method: 'POST',
                 body: JSON.stringify(post),
@@ -93,6 +103,8 @@
                 <form on:submit|preventDefault class="space-y-4">
                     <input type="text" name="name" id="name" bind:value={post.name} class="input" placeholder="Tytuł"/>
                     <input type="text" name="date" id="date" bind:value={post.date} class="input" placeholder="Data dodania"/>
+                    <input type="text" name="url" id="url" bind:value={post.url} class="input" placeholder="URL obrazka"/>
+                    <textarea name="description" id="description" rows="5" bind:value={post.description} class="input" placeholder="Krótki opis"></textarea>
                     <textarea name="content" id="content" rows="10" bind:value={post.content} class="input" placeholder="HTML / TREŚĆ"></textarea>
                     <button class="btn w-full" on:click={addPost}>Dodaj</button>
                 </form>
