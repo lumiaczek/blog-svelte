@@ -2,6 +2,7 @@
     import { onMount, onDestroy} from "svelte";
     import auth from '../auth/auth-store.js'
     import Navbar from './Navbar.svelte';
+    import Card from '../../components/utils/Card.svelte';
 
     let token = null;
 
@@ -111,8 +112,23 @@
             </div>
         
             <div class="w-full h-full rounded-lg shadow mt-4 mr-2">
+                <section class="flex p-4">
+                    <Card class="p-4">
+                        <div class="grid grid-cols-2 gap-2">
+                            <img src={post.url} alt="Obrazek artykułu" class="w-full h-auto">
+                            <div class="m-2">
+                                <h1 class="text-3xl font-bold mb-3">{post.name}</h1>
+                                {@html post.content}
+                            </div>
+                        </div>
+                        <div class="m-2">
+                            {@html post.content}
+                        </div>
+                    </Card>
+                </section>
+                
                 {#if postStateSuccess}
-                    <div class="shadow rounded-lg border-2 border-green-600 w-fit m-6 p-3">
+                    <div class="absolute md:bottom-4 md:right-4 shadow rounded-lg border-2 border-green-600 w-fit m-6 p-3 z-30">
                         <div class="text-green-500 bg-green-100 p-2 rounded w-fit">
                             <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
                         </div>
@@ -121,7 +137,7 @@
                     </div>  
                 {/if}
                 {#if postStateFail}
-                <div class="shadow rounded-lg border-2 border-red-600 w-fit m-6 p-3">
+                <div class="absolute md:bottom-4 md:right-4 shadow rounded-lg border-2 border-red-600 w-fit m-6 p-3 z-30">
                     <div class="text-red-500 bg-red-100 p-2 rounded w-fit">
                         <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                     </div>

@@ -19,14 +19,12 @@ app.get("/", async (req, res) =>{
         const posts = await Blog.find().lean();
         res.set('Content-Type', 'application/json');
         res.status(200).send(JSON.stringify(posts));
-
 });
 
-app.post("/", async (req, res) => {
-    const id = req.body.id;
-    const post = await Blog.find({_id: id}).lean();
-    res.set('Content-Type', 'application/json');
-    res.status(200).send(JSON.stringify(post));
+app.get("/blog/:id", async (req, res) => {
+     const data = req.params;
+     const post = await Blog.find({_id: data.id}).lean();
+     res.json(post);
 })
 
 app.post("/add", async (req,res) => {
@@ -89,7 +87,7 @@ app.get("/verify", (req, res) => {
     
         if (err) return res.sendStatus(403)
     
-        res.sendStatus(200).json({msg: "User autorized"})
+        res.json({msg: "User autorized"})
   
     });
 })
