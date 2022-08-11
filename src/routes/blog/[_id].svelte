@@ -29,17 +29,14 @@
 
 <article>
     <Navbar/>
-    <section class="flex p-4">
-        <Card class="p-4">
-            <div class="grid grid-cols-2 gap-2">
+    <section class="flex flex-column justify-center items-center p-4">
+        <Card class="flex flex-column justify-center items-center p-4 w-1/2">
+            <div class="grid grid-cols-1 gap-2">
                 <img src={post.url} alt="Obrazek artykułu" class="w-full h-auto">
                 <div class="m-2">
                     <h1 class="text-3xl font-bold mb-3">{post.name}</h1>
                     {@html post.content}
                 </div>
-            </div>
-            <div class="m-2">
-                {@html post.content}
             </div>
         </Card>
     </section>

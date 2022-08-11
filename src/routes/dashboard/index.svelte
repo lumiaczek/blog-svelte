@@ -1,21 +1,18 @@
 <script>
-    import { onMount, onDestroy} from "svelte";
-    import auth from '../auth/auth-store.js'
+    import { onMount, onDestroy} from "svelte"; 
     import Navbar from './Navbar.svelte';
     import Card from '../../components/utils/Card.svelte';
 
-    let token = null;
 
     $: ok = false;
     $: loading = true;
+
     let [ postStateSuccess, postStateFail ] = [false, false];
 
-    const unsubscribe = auth.subscribe(data => {
-            token = data;
-    });
-
+    let user = {};
 
     onMount(() => {
+        let token = document.cookie.replace("token=","");
         fetch("http://localhost:5000/verify",{
             method: 'GET',
             headers: {
@@ -25,20 +22,15 @@
             loading = false;
             if(res.ok){
                 ok = true;
+                res.json().then(res => {
+                    user = res.user
+                });
             }
         }).catch(err => {
             console.log(err);
         })
 
-        
-
     });
-
-    onDestroy(() => {
-        if(unsubscribe){
-            unsubscribe();
-        }
-    })
 
     $: post = {
         name: '',
@@ -97,7 +89,7 @@
 {/if}
 
 {#if ok}
-    <Navbar/>
+    <Navbar name={user.name} forename={user.forename}/>
         <div class="grid grid-cols-1 md:grid-cols-2">
         
             <div class="flex flex-col p-8">
@@ -112,17 +104,14 @@
             </div>
         
             <div class="w-full h-full rounded-lg shadow mt-4 mr-2">
-                <section class="flex p-4">
-                    <Card class="p-4">
-                        <div class="grid grid-cols-2 gap-2">
+                <section class="p-4">
+                    <Card class="flex flex-column justify-center items-center p-4 w-full">
+                        <div class="grid grid-cols-1 gap-2">
                             <img src={post.url} alt="Obrazek artykułu" class="w-full h-auto">
                             <div class="m-2">
                                 <h1 class="text-3xl font-bold mb-3">{post.name}</h1>
                                 {@html post.content}
                             </div>
-                        </div>
-                        <div class="m-2">
-                            {@html post.content}
                         </div>
                     </Card>
                 </section>

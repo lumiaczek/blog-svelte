@@ -43,11 +43,13 @@ app.post("/signup", (req, res) => {
         res.status(403).json({msg: "Email or password wasn't provided"});
     }
     User.create({
+        name: req.body.name,
+        forename: req.body.forename,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 10)
     }).then(user => {
-        const token = jwt.sign({id: user._id, email: user.email}, process.env.SECRET, {expiresIn: "500s"});
-        res.json({success: true, token: token});
+        // const token = jwt.sign({id: user._id, email: user.email}, process.env.SECRET, {expiresIn: "500s"});
+        res.json({success: true});
     }).catch(err => {
         res.status(400).json({msg:err});
     });
@@ -67,12 +69,12 @@ app.post("/login" , (req, res) => {
             if(!bcrypt.compareSync(req.body.password, user.password)){
                 res.status(400).json({msg: "Password for user is wrong"});
             } else {
-                const token = jwt.sign({id: user._id, email: user.email}, process.env.SECRET, {expiresIn: "1000s"});
-                res.status(200).json({msg: "Logged in!", token: token});
+                const token = jwt.sign({id: user._id, email: user.email, name:user.name, forename:user.forename}, process.env.SECRET, {expiresIn: "1000s"});
+                res.json({token: token});
             }
         }
     }).catch(err => {
-        // res.json({msg: err});
+        console.log(err);
     });
 });
 
@@ -87,7 +89,7 @@ app.get("/verify", (req, res) => {
     
         if (err) return res.sendStatus(403)
     
-        res.json({msg: "User autorized"})
+        res.json({msg: "User autorized", user:user})
   
     });
 })

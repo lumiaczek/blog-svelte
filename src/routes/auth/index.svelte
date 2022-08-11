@@ -2,26 +2,24 @@
     import { goto } from '$app/navigation';
 </script>
 
-<script>
-
-    import store from "./auth-store.js";
-    
+<script> 
     $: dane = {
         email: '',
         password: ''
     }
 
     const handleLogin = async () => {
-        await fetch("http://localhost:5000/login", {
+        document.cookie = "token" + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;'
+        await fetch("http://localhost:5000/login",{
             method: 'POST',
             body: JSON.stringify(dane),
             headers: {
 				'Content-Type': 'application/json'
 			}
         }).then(res => {
-                res.json().then(res => {
-                    store.set(res.token);
-                    goto("/dashboard")
+                 res.json().then(res => {
+                   document.cookie = `token=${res.token}`;
+                   goto("/dashboard")
                 });
                 
         }).catch(err => {
