@@ -14,3 +14,23 @@
     @apply h-10 px-6 py-2 rounded-lg text-sm font-semibold whitespace-nowrap inline-flex items-center transition-colors antialiased justify-center bg-blue-700 text-white;
     @apply hover:bg-opacity-80 focus:bg-opacity-80 focus:outline-none focus:ring focus:border-blue-300;
 }
+
+.btn-warning{
+    @apply bg-yellow-500
+}
+
+.btn-danger {
+    @apply bg-red-600
+}
+
+.table tr td:first-child{
+    @apply bg-blue-50 font-semibold;
+}
+
+.table tr:hover td{
+    @apply bg-gray-100 shadow-lg transition-colors;
+}
+
+.table .td-actions{
+    @apply text-center;
+}

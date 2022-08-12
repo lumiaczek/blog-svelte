@@ -25,8 +25,8 @@
         <i class="fa-solid fa-bars text-white text-2xl"></i>
     </div>
     <div class="hidden md:flex md:flex-row gap-6 items-center text-gray-200 text-xl">
-        <a class="hover:underline" href="/">Zarządzaj</a>
-        <a class="hover:underline" href="/">Dodaj</a>
+        <a class="hover:underline" href="/dashboard">Zarządzaj</a>
+        <a class="hover:underline" href="/dashboard/add">Dodaj</a>
         <a class="hover:underline" href="/">Statystyki</a>
         <button on:click={toogleLogin} class="btn bg-red-600">{`${name} ${forename}`}</button>
     </div>
@@ -39,8 +39,8 @@
     </div>
 
     <div class="absolute flex flex-col top-[48px] right-5 bg-blue-700 p-4 shadow rounded z-30 md:hidden gap-6 items-center text-gray-200 text-lg" class:hidden = {isVisible === false}>
-        <a class="hover:underline" href="/">Zarządzaj</a>
-        <a class="hover:underline" href="/">Dodaj</a>
+        <a class="hover:underline" href="/dashboard">Zarządzaj</a>
+        <a class="hover:underline" href="/dashboard/add">Dodaj</a>
         <a class="hover:underline" href="/">Statystyki</a>
         <button on:click={toogleLogin} class="btn bg-red-600">{`${name} ${forename}`}</button>
     </div>
