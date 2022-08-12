@@ -1,10 +1,20 @@
+<script context="module">
+    import {goto} from "$app/navigation"
+</script>
+
 <script>
     let isVisible = false;
+    let menuVisible = false;
 
     export let name = '';
     export let forename = ''
 
     const toogleMenu = () => isVisible = !isVisible;
+    const toogleLogin = () => menuVisible = !menuVisible
+    const logOf = () => {
+        document.cookie = "token" + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;'
+        goto("/")
+    }
 </script>
 
 <nav class="flex w-full h-12 flex-row  justify-between items-center bg-blue-600 p-8">
@@ -18,16 +28,21 @@
         <a class="hover:underline" href="/">Zarządzaj</a>
         <a class="hover:underline" href="/">Dodaj</a>
         <a class="hover:underline" href="/">Statystyki</a>
+        <button on:click={toogleLogin} class="btn bg-red-600">{`${name} ${forename}`}</button>
+    </div>
+
+    <div class="absolute top-[270px] z-50 md:top-14 right-[30px] bg-white shadow rounded-lg p-4 flex flex-col justify-center text-center" class:hidden={menuVisible===false}>
         <a class="hover:underline" href="/">Ustawienia</a>
-        <button class="btn bg-red-600">{`${name} ${forename}`}</button>
+        <div class="border-b-2 w-32 border-black my-3 inline-block"></div>
+        <!-- svelte-ignore a11y-missing-attribute -->
+        <a class="text-red-500 font-bold hover:underline cursor-pointer" on:click={logOf}>Wyloguj się</a>
     </div>
 
     <div class="absolute flex flex-col top-[48px] right-5 bg-blue-700 p-4 shadow rounded z-30 md:hidden gap-6 items-center text-gray-200 text-lg" class:hidden = {isVisible === false}>
         <a class="hover:underline" href="/">Zarządzaj</a>
         <a class="hover:underline" href="/">Dodaj</a>
         <a class="hover:underline" href="/">Statystyki</a>
-        <a class="hover:underline" href="/">Ustawienia</a>
-        <button class="btn">{`${name} ${forename}`}</button>
+        <button on:click={toogleLogin} class="btn bg-red-600">{`${name} ${forename}`}</button>
     </div>
 </nav>
 
