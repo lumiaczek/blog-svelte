@@ -38,6 +38,13 @@ app.post("/add", async (req,res) => {
     res.sendStatus(200)
 });
 
+app.delete("/delete/:id", async (req,res) => {
+    const id = req.params.id
+    console.log(id);
+    await Blog.findByIdAndDelete(id);
+    res.json({status: "success", msg:"Usunięto post"});
+})
+
 app.post("/signup", (req, res) => {
     if(!req.body.email || !req.body.password){
         res.status(403).json({msg: "Email or password wasn't provided"});
