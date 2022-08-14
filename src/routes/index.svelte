@@ -1,27 +1,30 @@
 <script context="module">
   import { goto } from "$app/navigation";
+
+  export async function load({ fetch }) {
+    const res = await fetch("http://localhost:5000/");
+    const posts = await res.json();
+
+    if (res.ok) {
+      return {
+        props: {
+          posts,
+        },
+      };
+    }
+
+    return {
+      status: res.status,
+      error: new Error("Could not fetch data"),
+    };
+  }
 </script>
 
 <script>
-  import { onMount, onDestroy } from "svelte";
   import Card from "../components/utils/Card.svelte";
   import Navbar from "../components/main/Navbar.svelte";
 
-  let posts = [];
-  let id;
-
-  onMount(() => {
-    fetch("http://localhost:5000/")
-      .then((res) => {
-        res.json().then((res) => {
-          posts = res;
-          console.log(posts);
-        });
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  });
+  export let posts = [];
 </script>
 
 <main>

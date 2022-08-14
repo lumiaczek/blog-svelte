@@ -1,18 +1,35 @@
+<script context="module">
+  export async function load({ fetch }) {
+    const res = await fetch("http://localhost:5000/");
+    const posts = await res.json();
+
+    if (res.ok) {
+      return {
+        props: {
+          posts,
+        },
+      };
+    }
+
+    return {
+      status: res.status,
+      error: new Error("Could not fetch"),
+    };
+  }
+</script>
+
 <script>
   import { onMount } from "svelte";
   import Navbar from "./Navbar.svelte";
   import TableWrapper from "../../components/table/TableWrapper.svelte";
   import Th from "../../components/table/Th.svelte";
   import Td from "../../components/table/Td.svelte";
-  import { each } from "svelte/internal";
 
   $: ok = false;
   $: loading = true;
 
-  let [postStateSuccess, postStateFail] = [false, false];
-
   let user = {};
-  let posts = [];
+  export let posts = [];
 
   const getPosts = () => {
     fetch("http://localhost:5000/")
