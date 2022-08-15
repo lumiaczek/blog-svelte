@@ -2,7 +2,7 @@
   import { goto } from "$app/navigation";
 
   export async function load({ fetch }) {
-    const res = await fetch("http://localhost:5000/");
+    const res = await fetch(`http://${location.hostname}:5000/`);
     const posts = await res.json();
 
     if (res.ok) {

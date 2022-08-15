@@ -1,6 +1,6 @@
 <script context="module">
   export async function load({ fetch }) {
-    const res = await fetch("http://localhost:5000/");
+    const res = await fetch(`http://${location.hostname}:5000/`);
     const posts = await res.json();
 
     if (res.ok) {
@@ -32,7 +32,7 @@
   export let posts = [];
 
   const getPosts = () => {
-    fetch("http://localhost:5000/")
+    fetch(`http://${location.hostname}:5000/`)
       .then((res) => {
         res.json().then((res) => {
           posts = res;
@@ -46,10 +46,11 @@
 
   onMount(() => {
     let token = document.cookie.replace("token=", "");
-    fetch("http://localhost:5000/verify", {
+    fetch(`http://${location.hostname}:5000/verify`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
+        "Access-Control-Allow-Origin": "*",
       },
     })
       .then((res) => {
@@ -68,8 +69,11 @@
   });
 
   const deletePost = (id) => {
-    fetch(`http://localhost:5000/delete/${id}`, {
+    fetch(`http://${location.hostname}/delete/${id}`, {
       method: "DELETE",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
     })
       .then((res) => {
         const index = posts.findIndex((x) => x._id === id);

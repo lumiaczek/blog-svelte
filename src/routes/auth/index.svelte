@@ -10,11 +10,12 @@
 
   const handleLogin = async () => {
     document.cookie = "token" + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-    await fetch("http://localhost:5000/login", {
+    await fetch(`http://${location.hostname}:5000/login`, {
       method: "POST",
       body: JSON.stringify(dane),
       headers: {
         "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
       },
     })
       .then((res) => {

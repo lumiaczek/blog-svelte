@@ -13,7 +13,7 @@
     let route = $page.url.pathname;
     let request = route.replace("/blog/", "");
 
-    fetch(`http://localhost:5000/blog/${request}`)
+    fetch(`http://${location.hostname}:5000/${request}`)
       .then((res) => {
         res.json().then((res) => {
           post = res[0];
