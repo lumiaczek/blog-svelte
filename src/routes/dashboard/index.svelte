@@ -1,23 +1,3 @@
-<script context="module">
-  export async function load({ fetch }) {
-    const res = await fetch(`http://${location.hostname}:5000/`);
-    const posts = await res.json();
-
-    if (res.ok) {
-      return {
-        props: {
-          posts,
-        },
-      };
-    }
-
-    return {
-      status: res.status,
-      error: new Error("Could not fetch"),
-    };
-  }
-</script>
-
 <script>
   import { onMount } from "svelte";
   import Navbar from "./Navbar.svelte";
